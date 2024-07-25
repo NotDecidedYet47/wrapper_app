@@ -1,4 +1,3 @@
-import { useRouter } from "expo-router";
 import {
   createContext,
   PropsWithChildren,
@@ -6,9 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 interface IAuthContext {
-  user: null;
+  user: FirebaseAuthTypes.User | null;
   isAuthenticated: boolean | undefined;
   login: () => void;
   logout: () => void;
@@ -23,15 +23,20 @@ interface IAuthContext {
 export const AuthContext = createContext<IAuthContext | null>(null);
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
-  const [user, setUser] = useState<null>(null);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
     undefined
   );
-  const router = useRouter();
 
   useEffect(() => {
-    // TODO: Check Current User & Rediect
-    router.push("signIn");
+    const currentUser = auth().currentUser;
+    if (currentUser) {
+      setIsAuthenticated(true);
+      setUser(currentUser);
+    } else {
+      setIsAuthenticated(false);
+      setUser(null);
+    }
   }, []);
 
   const login = async () => {
