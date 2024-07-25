@@ -9,9 +9,12 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+android/
+
 
 # Firebase config file
-# google-services.json
+google-services.json
+GoogleService-Info.plist
 
 # macOS
 .DS_Store
