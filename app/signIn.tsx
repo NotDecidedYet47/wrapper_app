@@ -1,11 +1,15 @@
+import { useRef } from "react";
 import { useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { ActionSheetRef } from "react-native-actions-sheet";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import SignInSheet from "@/components/Auth/SignInSheet";
 
 export default function signIn() {
+  const signInSheetRef = useRef<ActionSheetRef>(null);
   const router = useRouter();
 
   return (
@@ -19,10 +23,7 @@ export default function signIn() {
           <Image
             style={{ width: wp(85), height: hp(50) }}
             resizeMode="contain"
-            source={
-              // ? require("../assets/images/Job_hunt_dark.png")//
-              require("../assets/images/Job_hunt.png")
-            }
+            source={require("../assets/images/Job_hunt.png")}
           />
         </View>
         <View className="items-center">
@@ -40,6 +41,7 @@ export default function signIn() {
           <TouchableOpacity
             style={{ height: hp(5.5) }}
             className="flex-1 justify-center items-center border rounded-lg"
+            onPress={() => signInSheetRef.current?.show()}
           >
             <Text className="font-semibold">로그인</Text>
           </TouchableOpacity>
@@ -61,6 +63,7 @@ export default function signIn() {
           </Text>
         </View>
       </View>
+      <SignInSheet ref={signInSheetRef} />
     </View>
   );
 }

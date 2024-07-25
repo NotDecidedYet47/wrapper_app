@@ -1,8 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./app/*.{js,jsx,ts,tsx}", "./components/*.{js,jsx,ts,tsx}"],
+  mode: "jit",
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+    "./components/**/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: "Pretendard",
+    },
   },
   plugins: [],
 };
