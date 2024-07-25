@@ -6,8 +6,8 @@
 
 이 앱은 기본적으로 두 가지 역할을 수행합니다:
 
-1.	인증(Authentication) 기능: 사용자 인증 및 권한 부여와 같은 보안 관련 기능을 수행합니다.
-2.	웹 컨텐츠 제공(WebView): 주요 기능과 컨텐츠는 React 기반 웹 앱을 통해 제공하며, 이를 표시하기 위해 WebView를 사용합니다.
+1.	**인증(Authentication)** 기능: 사용자 인증 및 권한 부여와 같은 보안 관련 기능을 수행합니다.
+2.	**웹 컨텐츠 제공(WebView)**: 주요 기능과 컨텐츠는 React 기반 웹 앱을 통해 제공하며, 이를 표시하기 위해 WebView를 사용합니다.
 
 ## 시작 가이드
 
@@ -23,7 +23,7 @@ $ nvm use v.18.18.2
 $ npm install
 ```
 
-#### expo start
+### How to Start
 
 ```bash
 $ npm start # expo
@@ -32,9 +32,18 @@ $ npm ios # ios
 $ npm web # web
 ```
 
+### Create a build for emulator/simulator
+
+```bash
+$ eas build --profile development --platform android # Android
+```
+
 ## Stack
 
 - Typescript
-- React Native
-- Expo
-- NativeWind(TailwindCSS)
+- [React-Native](https://reactnative.dev/docs/getting-started)
+- [Expo](https://docs.expo.dev/)
+- [NativeWind(TailwindCSS)](https://www.nativewind.dev/)
+- [Firebase App(Auth + Firestore)](https://rnfirebase.io/)
+
+### Reference
