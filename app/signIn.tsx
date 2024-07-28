@@ -1,6 +1,12 @@
 import { useRef } from "react";
 import { useRouter } from "expo-router";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import {
   heightPercentageToDP as hp,
@@ -11,6 +17,8 @@ import SignInSheet from "@/components/Auth/SignInSheet";
 export default function signIn() {
   const signInSheetRef = useRef<ActionSheetRef>(null);
   const router = useRouter();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
 
   return (
     <View className="flex-1 dark:bg-black">
@@ -23,11 +31,15 @@ export default function signIn() {
           <Image
             style={{ width: wp(85), height: hp(50) }}
             resizeMode="contain"
-            source={require("../assets/images/Job_hunt.png")}
+            source={
+              isDark
+                ? require("../assets/images/Job_hunt_dark.png")
+                : require("../assets/images/Job_hunt.png")
+            }
           />
         </View>
         <View className="items-center">
-          <Text className="text-gray-500 dark:bg-gray-300 text-sm">잡헌터</Text>
+          <Text className="text-gray-400  text-sm">잡헌터</Text>
         </View>
         <View className="items-center mt-4">
           <Text className="font-bold text-lg dark:text-white">
@@ -40,17 +52,19 @@ export default function signIn() {
         <View className="flex-row gap-2 mt-12">
           <TouchableOpacity
             style={{ height: hp(5.5) }}
-            className="flex-1 justify-center items-center border rounded-lg"
+            className="flex-1 justify-center items-center border rounded-lg dark:bg-gray-500"
             onPress={() => signInSheetRef.current?.show()}
           >
-            <Text className="font-semibold">로그인</Text>
+            <Text className="font-semibold dark:text-white">로그인</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ height: hp(5.5) }}
             className="flex-1 justify-center items-center border rounded-lg bg-black dark:bg-white"
             onPress={() => router.push("signUp")}
           >
-            <Text className="text-white font-semibold">회원가입</Text>
+            <Text className="text-white font-semibold dark:text-black">
+              회원가입
+            </Text>
           </TouchableOpacity>
         </View>
         <View

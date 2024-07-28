@@ -2,61 +2,15 @@ import { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import auth from "@react-native-firebase/auth";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import {
-  GoogleSignin,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Step2 = ({ onNext }) => {
   const router = useRouter();
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: process.env.GOOGLE_CLIENT_ID,
-      offlineAccess: true,
-    });
-
-    // Check if the configuration is applied
-    const checkConfiguration = async () => {
-      try {
-        const currentUser = await GoogleSignin.getCurrentUser();
-        console.log("Current User:", currentUser);
-      } catch (error) {
-        console.error("Error getting current user:", error);
-      }
-    };
-
-    checkConfiguration();
-  }, []);
-
-  const signInWithGoogle = async () => {
-    try {
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      return auth()
-        .signInWithCredential(googleCredential)
-        .then(() => router.replace("profile"));
-    } catch (e) {
-      //  TODO: Alert Error Message
-      if (e.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log("User cancelled the login flow");
-      } else if (e.code === statusCodes.IN_PROGRESS) {
-        console.log("Sign in is in progress already");
-      } else if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log("Play services not available or outdated");
-      } else {
-        console.log("Some other error happened", e.message);
-      }
-    }
-  };
+  const { signInWithGoogle } = useAuth();
 
   return (
     <View style={{ paddingTop: hp(8), paddingHorizontal: wp(5) }}>
