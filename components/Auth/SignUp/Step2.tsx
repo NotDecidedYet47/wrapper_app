@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const Step2 = ({ onNext }) => {
   const router = useRouter();
-  const { signInWithGoogle } = useAuth();
+
 
   return (
     <View style={{ paddingTop: hp(8), paddingHorizontal: wp(5) }}>
@@ -26,10 +26,7 @@ const Step2 = ({ onNext }) => {
         className="flex-col gap-4"
         style={{ paddingTop: hp(4), paddingHorizontal: wp(2) }}
       >
-        <TouchableOpacity
-          className="flex-row justify-center items-center border border-gray-500 h-14 rounded-lg"
-          onPress={signInWithGoogle}
-        >
+        <TouchableOpacity className="flex-row justify-center items-center border border-gray-500 h-14 rounded-lg">
           <Image
             className="absolute left-3"
             source={require("../../../assets/images/google.png")}

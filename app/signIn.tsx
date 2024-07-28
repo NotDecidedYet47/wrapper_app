@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { useRouter } from "expo-router";
 import {
   Image,
   Text,
@@ -16,7 +15,6 @@ import SignInSheet from "@/components/Auth/SignInSheet";
 
 export default function signIn() {
   const signInSheetRef = useRef<ActionSheetRef>(null);
-  const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -57,7 +55,7 @@ export default function signIn() {
           >
             <Text className="font-semibold dark:text-white">로그인</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ height: hp(5.5) }}
             className="flex-1 justify-center items-center border rounded-lg bg-black dark:bg-white"
             onPress={() => router.push("signUp")}
@@ -65,7 +63,7 @@ export default function signIn() {
             <Text className="text-white font-semibold dark:text-black">
               회원가입
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View
           style={{ marginTop: hp(1) }}

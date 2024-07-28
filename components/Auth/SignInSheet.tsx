@@ -11,10 +11,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import { useAuth } from "@/contexts/AuthContext";
+import useGoogleAuth from "@/hooks/useGoogleAuth";
 
 const SignInSheet = forwardRef<ActionSheetRef, {}>((_, ref) => {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle } = useGoogleAuth();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
