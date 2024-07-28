@@ -30,7 +30,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const currentUser = auth().currentUser;
-    console.log(`현재 로그인한 유저, ${currentUser}`);
+    console.log(`현재 로그인한 유저, ${currentUser.uid}`);
     if (currentUser) {
       setIsAuthenticated(true);
       setUser(currentUser);

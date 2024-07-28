@@ -40,9 +40,7 @@ const Step2 = ({ onNext }) => {
         showPlayServicesUpdateDialog: true,
       });
       const { idToken } = await GoogleSignin.signIn();
-      console.log(idToken);
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      console.log(googleCredential);
       return auth()
         .signInWithCredential(googleCredential)
         .then(() => router.replace("profile"));
@@ -95,16 +93,17 @@ const Step2 = ({ onNext }) => {
             style={{ width: wp(35) }}
           />
         </View>
-        <TouchableOpacity className="flex-row justify-center items-center border border-gray-500 h-14 rounded-lg">
+        <TouchableOpacity
+          className="flex-row justify-center items-center border border-gray-500 h-14 rounded-lg"
+          onPress={onNext}
+        >
           <AntDesign
             style={{ position: "absolute", left: wp(6) }}
             name="mail"
             size={24}
             color="gray"
           />
-          <Text className="font-semibold text-gray-800" onPress={onNext}>
-            이메일로 계속하기
-          </Text>
+          <Text className="font-semibold text-gray-800">이메일로 계속하기</Text>
         </TouchableOpacity>
       </View>
     </View>

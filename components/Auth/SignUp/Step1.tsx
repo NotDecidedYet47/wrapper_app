@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "expo-router";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
@@ -9,6 +9,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import CountryCode from "../CountryCode";
+import useMultiFactorAuth from "@/hooks/useMultiFactorAuth";
 
 interface Props {
   onNext: () => void;
@@ -19,57 +20,26 @@ const TEST_CODE = "450976";
 
 const Step1 = ({ onNext }: Props) => {
   const router = useRouter();
-  const [message, setMessage] = useState("");
   // Default : Republic of Korea (+82)
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [showCountry, setShowContry] = useState(false);
-  const [countryCode, setCountryCode] = useState("+82");
-  const [confirm, setConfirm] =
-    useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
-  const [code, setCode] = useState("");
+  const [countryCode, setCountryCode] = useState("+1");
+  const {
+    verificationId,
+    phoneNumber,
+    setPhoneNumber,
+    signUpWithPhoneNumber,
+    confirmCode,
+    setCode,
+  } = useMultiFactorAuth(onNext);
 
-  const signUpWithPhoneNumber = async () => {
+  const onPressToAuthenticate = () => {
     const fullPhoneNum = `${countryCode} ${phoneNumber}`;
-    try {
-      const confirmation = await auth().signInWithPhoneNumber(
-        TEST_PHONE_NUMBER
-      );
-      setConfirm(confirmation);
-      confirmCode(TEST_CODE);
-    } catch (e) {
-      console.log(`Error sending code: ${e}`);
-    }
+    signUpWithPhoneNumber(fullPhoneNum);
   };
 
-  console.log(confirm);
-
-  const confirmCode = async (code: string) => {
-    try {
-      const userCredential = await confirm?.confirm(code);
-      const user = userCredential?.user;
-
-      const userDoc = await firestore()
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-
-      if (userDoc.exists) return setMessage("이미 존재하는 사용자입니다.");
-      else return onNext();
-    } catch (e) {
-      console.log(`Invalid code : ${e}`);
-    }
+  const handleCodeInputChange = (val: string) => {
+    setCode(val);
   };
-
-  // const handleCodeInputChange = (val: string) => {
-  //   // Update the state with the new value
-  //   setCode(val);
-
-  //   // Check if the input value is 6 digits long
-  //   if (val.length === 6) {
-  //     // Call the function when the input value is 6 digits
-  //     confirmCode();
-  //   }
-  // };
 
   return (
     <View style={{ paddingTop: hp(8), paddingHorizontal: wp(5) }}>
@@ -104,24 +74,33 @@ const Step1 = ({ onNext }: Props) => {
           <TouchableOpacity
             className="absolute border border-blue-500 rounded-lg px-2 py-1"
             style={{ bottom: hp(1), right: hp(2) }}
-            onPress={signUpWithPhoneNumber}
+            onPress={onPressToAuthenticate}
           >
             <Text className="text-xs font-semibold text-blue-500">
               인증하기
             </Text>
           </TouchableOpacity>
         </View>
-        <View className="flex-col pt-4">
-          <Text className="text-sm">인증 번호</Text>
-          <TextInput
-            className="py-2 border-b-2 border-gray-600 focus:border-blue-500"
-            style={{ width: wp(80) }}
-            placeholder="6자리 숫자 입력"
-            maxLength={6}
-            // onChangeText={handleCodeInputChange}
-            keyboardType="phone-pad"
-          />
-        </View>
+        {verificationId && (
+          <View className="flex-col pt-4">
+            <Text className="text-sm">인증 번호</Text>
+            <TextInput
+              className="py-2 border-b-2 border-gray-600 focus:border-blue-500"
+              style={{ width: wp(80) }}
+              placeholder="6자리 숫자 입력"
+              maxLength={6}
+              onChangeText={handleCodeInputChange}
+              keyboardType="phone-pad"
+            />
+            <TouchableOpacity
+              className="absolute border border-blue-500 rounded-lg px-2 py-1"
+              style={{ bottom: hp(1), right: hp(2) }}
+              onPress={confirmCode}
+            >
+              <Text className="text-xs font-semibold text-blue-500">확인</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
