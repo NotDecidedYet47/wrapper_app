@@ -30,10 +30,10 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const currentUser = auth().currentUser;
-    console.log(`현재 로그인한 유저, ${currentUser.uid}`);
     if (currentUser) {
       setIsAuthenticated(true);
       setUser(currentUser);
+      console.log(`현재 로그인한 유저, ${currentUser.uid}`);
     } else {
       setIsAuthenticated(false);
       setUser(null);
@@ -45,7 +45,13 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     } catch (e) {}
   };
 
-  const logout = async () => {};
+  const logout = async () => {
+    try {
+      await auth().signOut();
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   const register = async (
     email: string,

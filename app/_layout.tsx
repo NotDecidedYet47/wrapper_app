@@ -12,7 +12,7 @@ const MainLayout = () => {
     if (isAuthenticated === undefined) return;
     const inApp = segments[0] === "app";
     if (isAuthenticated && !inApp) {
-      router.replace("profile");
+      router.replace("home");
     } else if (isAuthenticated === false) {
       router.replace("signIn");
     }
